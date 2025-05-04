@@ -92,6 +92,7 @@ const OraclePredictions = ({ option }: Props) => {
         });
       } catch (err) {
         setError(true);
+        throw new Error(`Oracle predictions error: ${err}`)
       } finally {
         setLoading(false);
       }

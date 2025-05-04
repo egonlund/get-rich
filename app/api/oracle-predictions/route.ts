@@ -52,7 +52,7 @@ kus "predictions" väli on töötasu prognoos 3 järgmise aasta kohta; "suggesti
         return new Response(JSON.stringify(parsed), { status: 200 });
     } catch (err) {
         return new Response(JSON.stringify({
-            error: 'OpenAI API produced inforrect JSON', raw
+            error: `OpenAI API produced inforrect JSON, error: ${err}`, raw
         }), { status: 500 });
     }
 }
