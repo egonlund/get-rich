@@ -132,8 +132,8 @@ const OraclePredictions = ({ option }: Props) => {
       <div
         className={`transition-all duration-500 ease-in-out
           ${!error && !loading ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
-        <div className="flex md:flex-row flex-col md:gap-4 items-stretch shadow">
-          <div className="border-8 border-purple-900 rounded-lg my-4 bg-white md:w-1/2 flex flex-col justify-center">
+        <div className="flex md:flex-row flex-col md:gap-4 items-stretch my-4">
+          <div className="border-8 border-purple-900 rounded-lg bg-white md:w-1/2 flex flex-col justify-center flex-1">
             <div className="text-center">
               <h1 className="text-4xl leading-12 my-4 font-bold">
                 Mina kui tööturu prohvet näen <br /><span className="text-purple-700">&quot;{option.valueText}&quot;</span><br /> puhul suuri arenguid ...
@@ -153,7 +153,7 @@ const OraclePredictions = ({ option }: Props) => {
             </div>
           </div>
 
-          <div className="my-4 md:w-1/2">
+          <div className="md:w-1/2 border-8 border-purple-900 rounded-lg">
             <ChartComponent option={option.valueText} salaries={prediction?.salaries || []} />
           </div>
         </div>

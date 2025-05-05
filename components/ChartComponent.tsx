@@ -26,7 +26,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 export function ChartComponent({ option, salaries }: Props) {
   return (
-    <Card className="border-8 border-purple-900 rounded-lg">
+    <Card className="h-full bg-gradient-to-b from-white to-purple-100">
       <CardHeader>
         <CardTitle className="text-lg"><span className="text-purple-700 font-bold">{option}</span> – Keskmine brutokuupalk tegevusala järgi</CardTitle>
         <CardDescription><q>Mina näen numbreid, mida teised ei näe - siin on Sinu minevik ja tulevik</q></CardDescription>
