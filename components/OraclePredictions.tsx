@@ -115,7 +115,7 @@ const OraclePredictions = ({ option }: Props) => {
       <div
         className={`w-full my-2 p-4 text-center text-lg font-bold bg-red-300 rounded-md text-red-900 transition-all duration-500 ease-in-out
           ${error ? '' : 'hidden'}`}>
-        <p>Palun vali teine valdkond! Minu nähtavus on hägustunud "{option.valueText}" valdkonna suhtes...</p>
+        <p>Palun vali teine valdkond! Minu nähtavus on hägustunud &quot;{option.valueText}&quot; valdkonna suhtes...</p>
       </div>
 
       {/* Loading */}
@@ -136,7 +136,7 @@ const OraclePredictions = ({ option }: Props) => {
           <div className="border-8 border-purple-900 rounded-lg my-4 bg-white md:w-1/2 flex flex-col justify-center">
             <div className="text-center">
               <h1 className="text-4xl leading-12 my-4 font-bold">
-                Mina kui tööturu prohvet näen <br /><span className="text-purple-700">"{option.valueText}"</span><br /> puhul suuri arenguid ...
+                Mina kui tööturu prohvet näen <br /><span className="text-purple-700">&quot;{option.valueText}&quot;</span><br /> puhul suuri arenguid ...
               </h1>
               <p className="m-4 p-4 bg-purple-300 rounded-lg">{prediction?.trend}</p>
             </div>
