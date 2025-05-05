@@ -5,7 +5,7 @@ export default function Home() {
     <>
       <main className='p-2 flex flex-col items-center justify-center bg-gradient-to-b from-purple-400 to-white'>
         <h1 className='text-6xl text-white font-bold'>Palga Oraakel Paavo Prognoosid®</h1>
-        <q className='text-2xl text-white font-bold my-4'>Kes ei küsi Paavolt, jääb palgast ilma.</q>
+        <p className='text-2xl text-white font-bold my-4'>Kes ei küsi Paavolt, jääb palgast ilma</p>
         <video
           src="/oracle.mp4"
           width={600}

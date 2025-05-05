@@ -47,14 +47,22 @@ const OptionsDropdown = () => {
   };
 
   if (!selectedOption) {
-    return <q className="m-4 text-2xl font-bold">Oota nüüd natuke, las ma loitsun...</q>;
+    return (
+      <div
+        className={`my-4 flex flex-col items-center transition-all duration-500 ease-in-out
+          ${!selectedOption ? '' : 'hidden'}`}>
+        <div className="text-4xl font-bold text-purple-700">
+          <q>Oota nüüd natuke, las ma loitsun...</q>
+        </div>
+        <div className="my-4 w-10 h-10 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
   }
 
   return (
     <>
-      <div className='my-2 text-center'><q className='text-2xl text-white font-bold'>Tee oma valik</q></div>
-      <select onChange={handleSelectChange} value={selectedOption?.valueText} className='w-full rounded-md border-8 border-purple-700 bg-purple-200 py-4 text-lg font-bold focus:ring-purple-500 text-center'>
-        <option value={selectedOption.value}>{selectedOption.valueText}</option>
+      <div className='m-4 text-center'><q className='text-2xl text-white font-bold'>Tee oma valik</q></div>
+      <select onChange={handleSelectChange} value={selectedOption?.value} className='w-full rounded-md border-8 border-purple-600 bg-purple-200 py-4 text-lg font-bold focus:ring-purple-500 text-center shadow-lg'>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.valueText}

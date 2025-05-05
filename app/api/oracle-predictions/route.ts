@@ -1,3 +1,4 @@
+import { PredictionsRequest } from '@/types/OraclePredictions';
 import { OpenAI } from 'openai';
 
 const openai = new OpenAI({
@@ -7,15 +8,15 @@ const openai = new OpenAI({
 export async function POST(req: Request): Promise<Response> {
     const body = await req.json();
 
-    if (!body.topic || !Array.isArray(body.data)) {
-        return new Response(JSON.stringify({ error: 'Missing or invalid input.' }), { status: 400 });
+    if (!body.topic || !Array.isArray(body.salaryData)) {
+        return new Response(JSON.stringify({ error: 'Missing or invalid input.' }), { status: 404 });
     }
 
-    const { topic, data } = body;
+    const { topic, salaryData }: PredictionsRequest = body;
 
     const prompt = `
 Töövaldkonna "${topic}" töötaja soovib prognoosi alates ${new Date().getFullYear()}. aastast.
-Sisendandmed: ${JSON.stringify(data)}
+Sisendandmed (aasta, töötasu):\n${salaryData.map(salary => `${salary.year}: ${salary.value} €`).join('\n')}
 
 Tagasta JSON kujul
 {
@@ -49,10 +50,13 @@ kus "predictions" väli on töötasu prognoos 3 järgmise aasta kohta; "suggesti
     const raw = completion.choices[0]?.message.content;
     try {
         const parsed = JSON.parse(raw || '');
-        return new Response(JSON.stringify(parsed), { status: 200 });
+        if (!parsed?.predictions || !parsed?.suggestions || !parsed?.trend) {
+            return new Response(JSON.stringify({ error: 'Invalid response format from OpenAI' }), { status: 500 });
+        }
+        return new Response(JSON.stringify(parsed), { status: 200, headers: { 'Content-Type': 'application/json' } });
     } catch (err) {
         return new Response(JSON.stringify({
-            error: `OpenAI API produced inforrect JSON, error: ${err}`, raw
+            error: `Incorrect JSON from OpenAI, error: ${err}`, raw
         }), { status: 500 });
     }
 }

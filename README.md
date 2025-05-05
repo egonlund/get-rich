@@ -30,3 +30,18 @@ or
 For example: Chrome
 
 * Open DevTools -> Application -> Storage -> Local storage -> right click -> Clear
+
+### Some dropdown options produce error message for the user due to missing salary data in Statistikaamet
+
+For example
+
+* Kivi- ja pruunsöe kaevandamine
+* Toornafta ja maagaasi tootmine
+* Metallimaakide kaevandamine
+* Tubakatoodete tootmine
+...
+
+## TODO
+
+* [ ] Refactor `OraclePredictions.tsx` by extracting components: error handling, loading, oracle content, data fetching
+* [ ] Tests

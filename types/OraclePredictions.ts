@@ -3,7 +3,7 @@ import { Salary } from "./Salary";
 
 export interface PredictionsRequest {
     topic: string;
-    data: Salary[];
+    salaryData: Salary[];
 }
 
 export interface PredictionResponse {

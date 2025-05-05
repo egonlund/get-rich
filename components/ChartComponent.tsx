@@ -26,9 +26,9 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 export function ChartComponent({ option, salaries }: Props) {
   return (
-    <Card className="border-8 border-purple-900">
+    <Card className="border-8 border-purple-900 rounded-lg">
       <CardHeader>
-        <CardTitle>{option} – Keskmine brutokuupalk tegevusala järgi</CardTitle>
+        <CardTitle className="text-lg"><span className="text-purple-700 font-bold">{option}</span> – Keskmine brutokuupalk tegevusala järgi</CardTitle>
         <CardDescription><q>Mina näen numbreid, mida teised ei näe - siin on Sinu minevik ja tulevik</q></CardDescription>
       </CardHeader>
       <CardContent>
@@ -37,15 +37,15 @@ export function ChartComponent({ option, salaries }: Props) {
             accessibilityLayer
             data={salaries}
             margin={{
-              top: 20,
+              top: 10,
             }}>
             <CartesianGrid vertical={true} />
             <XAxis
               dataKey="year"
               tickLine={true}
-              tickMargin={10}
+              tickMargin={3}
               axisLine={true}
-              fontSize={18}
+              fontSize={21}
             />
             <Bar dataKey="value" radius={8}>
               {salaries && salaries.map((entry, index) => {

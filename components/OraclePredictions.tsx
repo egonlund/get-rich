@@ -42,7 +42,11 @@ const fetchAverageMonthlyGrossSalaries = async (option: EconomicActivity): Promi
     body: JSON.stringify(postData),
   });
 
-  const response: SalaryResponse = await res.json();
+  if (!res.ok) {
+    throw new Error(`Failed to fetch salaries: ${res.status}`);
+  }
+
+  const response = await res.json() as SalaryResponse;
   return mapSalaries(response);
 };
 
@@ -64,29 +68,28 @@ const OraclePredictions = ({ option }: Props) => {
     const cached = loadFromLocalStorage(option.value);
 
     const process = async () => {
-      if (!option) return;
       setError(false);
       setLoading(true);
 
       try {
-        const salaries = await fetchAverageMonthlyGrossSalaries(option);
+        const salaryData = await fetchAverageMonthlyGrossSalaries(option);
 
-        if (salaries.some((item) => item.value === null)) {
+        if (salaryData.some((item) => item.value == null)) {
           setError(true);
           return;
         }
 
         const request: PredictionsRequest = {
           topic: option.valueText,
-          data: salaries,
+          salaryData: salaryData,
         };
 
         const response: PredictionResponse = await fetchOraclePredictions(request);
-        const fullSalaries = [...salaries, ...response.predictions];
+        const completeSalaryData = [...salaryData, ...response.predictions];
 
         setPrediction({
           option,
-          salaries: fullSalaries,
+          salaries: completeSalaryData,
           suggestions: response.suggestions,
           trend: response.trend,
         });
@@ -110,19 +113,19 @@ const OraclePredictions = ({ option }: Props) => {
     <>
       {/* Error */}
       <div
-        className={`my-2 w-full p-2 text-center text-lg font-bold bg-red-300 rounded-md text-red-900 transition-all duration-500 ease-in-out
-          ${error ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
-        <q>Palun vali teine valdkond! Minu nähtavus on hägustunud selle valdkonna suhtes...</q>
+        className={`w-full my-2 p-4 text-center text-lg font-bold bg-red-300 rounded-md text-red-900 transition-all duration-500 ease-in-out
+          ${error ? '' : 'hidden'}`}>
+        <p>Palun vali teine valdkond! Minu nähtavus on hägustunud "{option.valueText}" valdkonna suhtes...</p>
       </div>
 
       {/* Loading */}
       <div
-        className={`transition-all duration-500 ease-in-out flex flex-col items-center
-          ${loading ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
-        <div className="text-2xl font-bold text-white">
+        className={`my-4 flex flex-col items-center transition-all duration-500 ease-in-out
+          ${loading ? '' : 'hidden'}`}>
+        <div className="text-4xl font-bold text-white">
           <q>Ma olen vana mees, anna aega atra seada...</q>
         </div>
-        <div className="w-10 h-10 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
+        <div className="my-4 w-10 h-10 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
       </div>
 
       {/* Oracle Predictions */}
@@ -130,19 +133,19 @@ const OraclePredictions = ({ option }: Props) => {
         className={`transition-all duration-500 ease-in-out
           ${!error && !loading ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
         <div className="flex md:flex-row flex-col md:gap-4 items-stretch shadow">
-          <div className="border-8 border-purple-900 rounded-md my-4 bg-white md:w-1/2 flex flex-col justify-center">
+          <div className="border-8 border-purple-900 rounded-lg my-4 bg-white md:w-1/2 flex flex-col justify-center">
             <div className="text-center">
-              <h1 className="text-lg my-4 font-bold">
-                <q>Mina kui tööturu prohvet näen selles valdkonnas suuri arenguid ...</q>
+              <h1 className="text-4xl leading-12 my-4 font-bold">
+                Mina kui tööturu prohvet näen <br /><span className="text-purple-700">"{option.valueText}"</span><br /> puhul suuri arenguid ...
               </h1>
-              <p className="p-2">{prediction?.trend}</p>
+              <p className="m-4 p-4 bg-purple-300 rounded-lg">{prediction?.trend}</p>
             </div>
 
             <div className="text-center">
-              <h1 className="text-lg my-4 font-bold">
-                <q>Soovid tuleviku palka? Las ma pajatan Sulle, mis oskusi pead arendama ...</q>
+              <h1 className="text-4xl leading-12 my-4 font-bold">
+                Soovid tuleviku palka?<br />Las ma pajatan <span className="text-purple-700">Sulle</span>, mis oskusi pead arendama ...
               </h1>
-              <ul>
+              <ul className="m-4 p-4 bg-purple-300 rounded-lg">
                 {prediction?.suggestions.map((suggestion, idx) => (
                   <li className="my-2" key={idx}>{suggestion}</li>
                 ))}
